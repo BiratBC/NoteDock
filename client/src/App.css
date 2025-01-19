@@ -2,3 +2,7 @@ h1 {
   font-family: "Pixelify Sans";
   font-size: 4rem;
 }
+
+i{
+  cursor: pointer;
+}

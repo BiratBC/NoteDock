@@ -1,71 +1,125 @@
 import NoteContext from "./noteContext";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
-/*
-import {createContext} from 'react';
-const noteContext = createContext();
-const s1 = {
-    "name" : "Birat", //context var name . name
-    "class" : "10a"
-}
 
-const [state, setState] = useState(s1);
-const update =  () => {
-    setTimeout(() => {
-        setState({
-            "name" : "Suman",
-            "class" : "9b"
-        })
-    }, 2000);
-}
-*/
 
 //This file contains all the states related to notes so it can be shared among every components that needs notes related props
 
-const NoteState =  (props) => {
-    
-    const notesIntial = [
-        {
-          "_id": "6786b5b77450b79a16d5e9e3",
-          "user": "6778203bd9b70e02ad5e87eb",
-          "title": "First Note",
-          "description": "this is my first note",
-          "tag": "first, note, start",
-          "date": "2025-01-14T19:06:31.975Z",
-          "__v": 0
+const NoteState = (props) => {
+  const [notes, setnotes] = useState([]);
+  const host = "http://localhost:5000";
+
+  //GET ALL NOTES :
+
+  const getNotes = async () => {
+    try {
+      const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc3ODIwM2JkOWI3MGUwMmFkNWU4N2ViIn0sImlhdCI6MTczNzMwNDQyNn0.j-kWjflWC_JYc4JPIkohKeFI0-xd-nhTI04Q56KuJlM",
         },
-        {
-            "_id": "6786b5b77450b79a16d5e9e3",
-            "user": "6778203bd9b70e02ad5e87eb",
-            "title": "First Note",
-            "description": "this is my first note",
-            "tag": "first, note, start",
-            "date": "2025-01-14T19:06:31.975Z",
-            "__v": 0
-          },
-          {
-            "_id": "6786b5b77450b79a16d5e9e3",
-            "user": "6778203bd9b70e02ad5e87eb",
-            "title": "First Note",
-            "description": "this is my first note",
-            "tag": "first, note, start",
-            "date": "2025-01-14T19:06:31.975Z",
-            "__v": 0
-          }
+      });
+      const jsonData = await response.json();
+      console.log(jsonData);
+      setnotes(jsonData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-      ]
+  //Add a note
+  const addNote = async (title, description, tag) => {
+    //TODO : API CALL
+    try {
+      const response = await fetch(`${host}/api/notes/addnote`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc3ODIwM2JkOWI3MGUwMmFkNWU4N2ViIn0sImlhdCI6MTczNzMwNDQyNn0.j-kWjflWC_JYc4JPIkohKeFI0-xd-nhTI04Q56KuJlM",
+        },
+        body: JSON.stringify({ title, description, tag }),
+      });
+      if (response.ok) {
+        toast.success("Note created successfully");
+      }
 
-      const [notes, setnotes] = useState(notesIntial);
+      // setnotes(notes.concat());
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Error while creating note");
+    }
+  };
 
+  //Delete a note
+  const deleteNote = async (id) => {
+    //TODO : API CALL
+    try {
+      const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc3ODIwM2JkOWI3MGUwMmFkNWU4N2ViIn0sImlhdCI6MTczNzMwNDQyNn0.j-kWjflWC_JYc4JPIkohKeFI0-xd-nhTI04Q56KuJlM",
+        },
+        body: JSON.stringify(),
+      });
 
-    return (
-        <NoteContext.Provider value={{notes, notesIntial}}>
+      if (response.ok) {
+        toast.success("Note Deleted Successfully");
+      }
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Error while deleting note");
+    }
+  };
 
-            {props.children}
+  //Edit a note
+  const editNote = async (id, title, description, tag) => {
+    //TODO : API CALL
+    try {
+      const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc3ODIwM2JkOWI3MGUwMmFkNWU4N2ViIn0sImlhdCI6MTczNzMwNDQyNn0.j-kWjflWC_JYc4JPIkohKeFI0-xd-nhTI04Q56KuJlM",
+        },
+        body: JSON.stringify({ title, description, tag }),
+      });
 
-        </NoteContext.Provider>
-    )
+      //Immediately rendering in front end after successfull response
+      let newNotes = JSON.parse(JSON.stringify(notes));
+      for (let index = 0; index < newNotes.length; index++) {
+        const element = newNotes[index];
+        if (element._id === id) {
+          newNotes[index].title = title;
+          newNotes[index].description = description;
+          newNotes[index].tag = tag;
+          break;
+        }
+      }
+      setnotes(newNotes);
 
-}
+      if (response.ok) {
+        toast.success("Note updated Successfully");
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Failed to update note");
+    }
+  };
+
+  return (
+    <NoteContext.Provider
+      value={{ notes, addNote, deleteNote, editNote, getNotes }}
+    >
+      {props.children}
+    </NoteContext.Provider>
+  );
+};
 
 export default NoteState;

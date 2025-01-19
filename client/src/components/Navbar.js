@@ -4,13 +4,13 @@ import { Link, NavLink } from "react-router-dom";
 function Navbar() {
   return (
     <>
-      <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
-        <div class="container-fluid">
-          <Link class="navbar-brand" to="/">
+      <nav className="navbar navbar-expand-lg  navbar-dark bg-dark">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">
             Navbar
           </Link>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNavAltMarkup"
@@ -18,10 +18,10 @@ function Navbar() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav">
               <NavLink
                 to="/"
                 className={({ isActive, isPending }) =>

@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import About from "./components/About";
 import NoteState from "./context/notes/NoteState";
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -14,6 +15,18 @@ function App() {
             v7_startTransition: true,
           }}
         >
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <Navbar />
           <Routes>
             <Route exact path="/" element={<Home />} />
