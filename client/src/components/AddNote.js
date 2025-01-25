@@ -33,6 +33,7 @@ function AddNote() {
               placeholder="Title"
               onChange={onChange}
               name="title"
+              required
             />
           </div>
 
@@ -45,6 +46,7 @@ function AddNote() {
               placeholder="Description"
               onChange={onChange}
               name="description"
+              required
             />
           </div>
 
@@ -58,6 +60,7 @@ function AddNote() {
               placeholder="tag"
               onChange={onChange}
               name="tag"
+              required
             />
           </div>
 
@@ -67,6 +70,7 @@ function AddNote() {
             type="submit"
             className="btn btn-primary"
             onClick={handleClick}
+            disabled ={note.title.length<5 || note.description.length<10}
           >
             Add Note
           </button>

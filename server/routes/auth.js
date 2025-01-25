@@ -115,7 +115,7 @@ router.post(
 
       const jwtToken = jwt.sign(payloadData, jwt_secret);
 
-      res.json(jwtToken);
+      res.json({jwtToken});
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error")

@@ -1,4 +1,4 @@
-import React, { useContext , useState, useEffect} from "react";
+import React, { useContext } from "react";
 import contextValue from "../context/notes/noteContext";
 
 function NoteItem(props) {

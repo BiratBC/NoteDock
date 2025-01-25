@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef , useState} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import contextValue from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 
@@ -6,26 +6,26 @@ function Notes() {
   const context = useContext(contextValue);
   const { notes, getNotes, editNote } = context;
 
-   const [note, setNote] = useState({
-      id : "",
-      etitle: "",
-      edescription: "",
-      etag: "default",
-    });
-  
+  const [note, setNote] = useState({
+    id: "",
+    etitle: "",
+    edescription: "",
+    etag: "default",
+  });
+
   const onChange = (e) => {
     setNote({
       ...note,
-      [e.target.name] : e.target.value,
-    })
+      [e.target.name]: e.target.value,
+    });
   };
   const updateNote = (currentNote) => {
     ref.current.click();
     setNote({
-      id : currentNote._id,
-      etitle : currentNote.title,
-      edescription : currentNote.description,
-      etag : currentNote.tag
+      id: currentNote._id,
+      etitle: currentNote.title,
+      edescription: currentNote.description,
+      etag: currentNote.tag,
     });
   };
 
@@ -33,19 +33,28 @@ function Notes() {
     e.preventDefault();
     console.log("note updated", note);
     editNote(note.id, note.etitle, note.edescription, note.etag);
-    refClose.current.click();  
-  }
-  
+    refClose.current.click();
+  };
+
   const ref = useRef(null);
   const refClose = useRef(null);
-  
+
   useEffect(() => {
     getNotes();
   }, []);
   return (
     <>
       <div className="container">
-      <button type="button" ref = {ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+        <button
+          type="button"
+          ref={ref}
+          className="btn btn-primary d-none"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          data-bs-whatever="@mdo"
+        >
+          Open modal for @mdo
+        </button>
         <div
           className="modal fade"
           id="exampleModal"
@@ -79,6 +88,7 @@ function Notes() {
                       name="etitle"
                       value={note.etitle}
                       onChange={onChange}
+                      required
                     />
                   </div>
                   <div className="mb-3">
@@ -92,6 +102,8 @@ function Notes() {
                       name="edescription"
                       value={note.edescription}
                       onChange={onChange}
+                      required
+                      minLength={10}
                     />
                   </div>
                   <div className="mb-3">
@@ -104,13 +116,15 @@ function Notes() {
                       name="etag"
                       value={note.etag}
                       onChange={onChange}
+                      minLength={3}
+                      required
                     ></textarea>
                   </div>
                 </form>
               </div>
               <div className="modal-footer">
                 <button
-                ref={refClose}
+                  ref={refClose}
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
@@ -121,6 +135,7 @@ function Notes() {
                   type="button"
                   className="btn btn-primary"
                   onClick={handleClick}
+                  disabled={note.etitle.length < 5 || note.edescription.length <10}
                 >
                   Update Note
                 </button>
@@ -130,13 +145,12 @@ function Notes() {
         </div>
         <div className="row my-3">
           <h2>Your notes</h2>
+          <div className="container">
+            {notes.length === 0 && "No notes to display"}
+          </div>
           {notes.map((note) => {
             return (
-              <NoteItem
-                key={note._id}
-                updateNote={updateNote}
-                note={note}
-              />
+              <NoteItem key={note._id} updateNote={updateNote} note={note} />
             );
           })}
         </div>

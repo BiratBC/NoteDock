@@ -38,6 +38,10 @@ function Navbar() {
               </NavLink>
             </div>
           </div>
+          <div className="d-flex mx-5">
+            <Link to="/login"><button className="btn btn-primary mx-3">Log in</button></Link>
+            <Link to="/signup"><button className="btn btn-primary">Sign up</button></Link>
+          </div>
         </div>
       </nav>
     </>
