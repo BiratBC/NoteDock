@@ -8,12 +8,17 @@ function Signup() {
     password: "",
     cpassword: "",
   });
+  const [error, setError] = useState("");
 
   const onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (inputs.password !== inputs.cpassword) {
+      setError("Password not matching")
+      return
+    }
     try {
       const host = `http://localhost:5000`;
       const response = await fetch(`${host}/api/auth/createUser`, {
@@ -30,10 +35,12 @@ function Signup() {
       const json = await response.json();
       console.log(json);
       if (response.ok) {
-        toast.success("Logged in successfully");
+        toast.success("Account created successfully");
         localStorage.setItem("token", json.jwtToken);
+        window.location.href="/"
       }
     } catch (error) {
+      toast.error("Error while creating account");
       console.error(error.message);
     }
   };
@@ -86,10 +93,14 @@ function Signup() {
               value={inputs.cpassword}
               onChange={onChange}
             />
+            <p className="" style={{fontStyle : "italic"}}>{error}</p>
           </div>
+          <div className="button-container my-3">
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
+          </div>
+          
         </form>
       </div>
     </>

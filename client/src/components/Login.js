@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 function Login() {
   const [input, setInput] = useState({
-    email: "email",
+    email: "",
     password: "",
   });
 
@@ -27,13 +27,16 @@ function Login() {
       if (response.ok) {
         toast.success("Logged in successfully");
         localStorage.setItem("token", json.jwtToken);
-        
+        window.location.href="/"
+      }
+      else{
+        toast.error("Invalid username or password")
       }
 
       // setnotes(notes.concat());
     } catch (error) {
       console.error(error.message);
-      toast.error("Invalid username or password");
+      toast.error("Unable to login. Try again later");
     }
   };
   return (
@@ -63,9 +66,14 @@ function Login() {
               onChange={onChange}
             />
           </div>
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
+          <div className="to-register">
+            <p>Don't have an account ? <a href="/signup">Register here</a></p>
+          </div>
+          <div className="button-container my-3">
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </>

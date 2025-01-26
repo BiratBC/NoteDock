@@ -40,7 +40,14 @@ function Notes() {
   const refClose = useRef(null);
 
   useEffect(() => {
-    getNotes();
+    if (localStorage.getItem('token')) {
+      getNotes();
+    }
+    else{
+      window.location.href = "/login";
+    }
+
+    // eslint-disable-next-line
   }, []);
   return (
     <>

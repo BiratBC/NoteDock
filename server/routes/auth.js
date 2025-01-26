@@ -62,9 +62,8 @@ router.post(
 
       const jwtToken = jwt.sign(payloadData, jwt_secret, {expiresIn : '1hr'});
 
-      console.log(jwtToken);
+      // console.log(jwtToken);
 
-      res.json("Created Successfully");
       res.json({ jwtToken: jwtToken });
     } catch (err) {
       console.error(err);
